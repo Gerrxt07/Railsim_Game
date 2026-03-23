@@ -13,16 +13,33 @@ export function splashAnim(node: HTMLElement) {
 
 // 2. Circle Reveal: Öffnet das Spielfeld aus der Mitte heraus
 export function circleReveal(node: HTMLElement, isRunning: () => boolean) {
+  let hasRevealed = false;
+
   // Svelte 5 $effect reagiert automatisch auf Änderungen von isRunning()
   $effect(() => {
     if (isRunning()) {
-      animate(
-        node,
-        { clipPath: ['circle(0% at 50% 50%)', 'circle(150% at 50% 50%)'] },
-        { duration: 4.2, ease: [0.22, 1, 0.36, 1] }
-      );
+      if (!hasRevealed) {
+        hasRevealed = true;
+        animate(
+          node,
+          { clipPath: ['circle(0% at 50% 50%)', 'circle(150% at 50% 50%)'] },
+          { duration: 4.2, ease: [0.22, 1, 0.36, 1] }
+        );
+      }
     } else {
+      hasRevealed = false;
       node.style.clipPath = 'circle(0% at 50% 50%)';
     }
   });
+}
+
+// 3. Main Menu Item Reveal
+export function menuItemAnim(node: HTMLElement, index: number) {
+  node.style.opacity = '0';
+  node.style.transform = 'translateY(20px)';
+  animate(
+    node,
+    { opacity: [0, 1], y: [20, 0] },
+    { duration: 1.2, delay: 1.5 + index * 0.25, ease: 'easeOut' }
+  );
 }

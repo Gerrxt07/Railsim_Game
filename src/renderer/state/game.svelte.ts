@@ -2,6 +2,8 @@
 export enum GameState {
   INITIALIZING = 'INITIALIZING',
   SPLASH = 'SPLASH',
+  MAIN_MENU = 'MAIN_MENU',
+  LOADING = 'LOADING',
   RUNNING = 'RUNNING'
 }
 

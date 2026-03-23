@@ -2,15 +2,24 @@
   import { GameState, currentGameState } from './state/game.svelte';
   import { circleReveal } from './actions/animations.svelte';
   import SplashScreen from './components/SplashScreen.svelte';
+  import MainMenu from './components/MainMenu.svelte';
 
   const gridSize = 40;
   const dotRadius = 1.5;
+
+  let appVersion = $state('');
+
+  $effect(() => {
+    window.electronAPI?.getAppVersion()
+      .then(v => appVersion = v)
+      .catch(e => console.error("Failed to fetch app version:", e));
+  });
 </script>
 
 <div class="w-screen h-screen bg-black relative">
   
   <main 
-    use:circleReveal={() => currentGameState.value === GameState.RUNNING}
+    use:circleReveal={() => currentGameState.value !== GameState.SPLASH && currentGameState.value !== GameState.INITIALIZING}
     class="absolute inset-0 bg-[#f4f4ec] overflow-hidden text-slate-900 z-10"
     class:running-cursor={currentGameState.value === GameState.RUNNING}
   >
@@ -27,10 +36,19 @@
     </svg>
   </main>
 
-  {#if currentGameState.value !== GameState.RUNNING}
+  {#if currentGameState.value === GameState.SPLASH || currentGameState.value === GameState.INITIALIZING}
     <SplashScreen />
   {/if}
 
+  {#if currentGameState.value === GameState.MAIN_MENU}
+    <MainMenu />
+  {/if}
+
+  {#if appVersion && currentGameState.value !== GameState.SPLASH && currentGameState.value !== GameState.INITIALIZING}
+    <div class="absolute bottom-4 right-4 text-slate-500/50 text-sm font-light pointer-events-none z-30">
+      Version {appVersion}
+    </div>
+  {/if}
 </div>
 
 <style lang="postcss">

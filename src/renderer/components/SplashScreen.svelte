@@ -21,8 +21,8 @@
           await new Promise(resolve => setTimeout(resolve, splashSequence[i].duration));
         }
   
-        // Übergang zum Hauptspiel
-        setGameState(GameState.RUNNING);
+        // Übergang zum Hauptmenü
+        setGameState(GameState.MAIN_MENU);
       };
   
       startSequence();
