@@ -1,66 +1,10 @@
 <script lang="ts">
-  import splash_1_src from '../assets/content/Splash-Not_Unreal.png';
-  import splash_2_src from '../assets/content/Splash-Liminal_Runtime.png';
-
-  import { GameState, currentGameState, setGameState } from './state/game.svelte';
-  
-  import { animate } from 'motion';
+  import { GameState, currentGameState } from './state/game.svelte';
+  import { circleReveal } from './actions/animations.svelte';
+  import SplashScreen from './components/SplashScreen.svelte';
 
   const gridSize = 40;
   const dotRadius = 1.5;
-
-  let currentSplashIndex = $state(0);
-
-  const splashSequence = [
-    { src: splash_1_src, duration: 3500 },
-    { src: splash_2_src, duration: 3500 }
-  ];
-
-  $effect(() => {
-    const startSequence = async () => {
-      setGameState(GameState.SPLASH);
-
-      for (let i = 0; i < splashSequence.length; i++) {
-        currentSplashIndex = i;
-        await new Promise(resolve => setTimeout(resolve, splashSequence[i].duration));
-      }
-
-      // Übergang zum Hauptspiel
-      setGameState(GameState.RUNNING);
-    };
-
-    startSequence();
-  });
-
-
-
-  // 1. Splash Animation (Verblassen + leichtes Skalieren für mehr "Playfulness")
-  function splashAnim(node: HTMLElement) {
-    // Initial unsichtbar, um Flackern zu vermeiden
-    node.style.opacity = '0';
-    animate(
-      node,
-      { opacity: [0, 1, 1, 0], scale: [0.95, 1, 1, 1] },
-      { duration: 2.5, times: [0, 0.15, 0.85, 1], ease: 'easeInOut' }
-    );
-  }
-
-  // 2. Circle Reveal: Öffnet das Spielfeld aus der Mitte heraus
-  function circleReveal(node: HTMLElement, isRunning: () => boolean) {
-    $effect(() => {
-      if (isRunning()) {
-        // Der Kreis öffnet sich bis auf 150%, um auch die Ecken des Bildschirms auszufüllen
-        animate(
-          node,
-          { clipPath: ['circle(0% at 50% 50%)', 'circle(150% at 50% 50%)'] },
-          { duration: 4.2, ease: [0.22, 1, 0.36, 1] } // Schöne "snappy" easing Kurve
-        );
-      } else {
-        // Solange das Spiel nicht RUNNING ist, halten wir das weiße Feld zu (0%)
-        node.style.clipPath = 'circle(0% at 50% 50%)';
-      }
-    });
-  }
 </script>
 
 <div class="w-screen h-screen bg-black relative">
@@ -77,22 +21,14 @@
         </pattern>
       </defs>
       <rect width="100%" height="100%" fill="url(#dot-grid)" />
+      
       <g id="network-layer">
-      </g>
+        </g>
     </svg>
   </main>
 
   {#if currentGameState.value !== GameState.RUNNING}
-    <div class="absolute inset-0 bg-black flex items-center justify-center z-50">
-      {#key currentSplashIndex}
-        <img 
-          use:splashAnim
-          src={splashSequence[currentSplashIndex]?.src} 
-          alt="Splash Logo" 
-          class="absolute max-w-sm h-auto"
-        />
-      {/key}
-    </div>
+    <SplashScreen />
   {/if}
 
 </div>
