@@ -1,92 +1,107 @@
 <script lang="ts">
-  import { fade } from 'svelte/transition';
-  
-  // Import our logos as Vite assets
   import splash_1_src from '../assets/content/Splash-Not_Unreal.png';
   import splash_2_src from '../assets/content/Splash-Liminal_Runtime.png';
 
-  // Import game state management
   import { GameState, currentGameState, setGameState } from './state/game.svelte';
+  
+  import { animate } from 'motion';
 
-  // Grid/Dot definitions from previous step
   const gridSize = 40;
   const dotRadius = 1.5;
 
-  // Track which splash logo is visible during the SPLASH phase
   let currentSplashIndex = $state(0);
 
-  // Define the splash sequence (Image source and duration in ms)
   const splashSequence = [
-    { src: splash_1_src, duration: 2000 }, // 2 seconds
-    { src: splash_2_src, duration: 2000 }  // 2 seconds
+    { src: splash_1_src, duration: 3500 },
+    { src: splash_2_src, duration: 3500 }
   ];
 
-  // Svelte 5 standard initialization effect (replaces onMount/onDestroy logic)
   $effect(() => {
-    // Start the sequence after a tiny initialization delay
     const startSequence = async () => {
-      // Step 1: Initializing -> Splash
       setGameState(GameState.SPLASH);
 
-      // Step 2: Loop through each logo in the sequence
       for (let i = 0; i < splashSequence.length; i++) {
-        currentSplashIndex = i; // Show current logo
-        // Wait for the duration specified in the sequence object
+        currentSplashIndex = i;
         await new Promise(resolve => setTimeout(resolve, splashSequence[i].duration));
       }
 
-      // Step 3: Splash is done -> Transition to Running
-      // This will trigger the fade-out of the black overlay
+      // Übergang zum Hauptspiel
       setGameState(GameState.RUNNING);
     };
 
-    // Run the sequence once when the component mounts
     startSequence();
   });
+
+
+
+  // 1. Splash Animation (Verblassen + leichtes Skalieren für mehr "Playfulness")
+  function splashAnim(node: HTMLElement) {
+    // Initial unsichtbar, um Flackern zu vermeiden
+    node.style.opacity = '0';
+    animate(
+      node,
+      { opacity: [0, 1, 1, 0], scale: [0.95, 1, 1, 1] },
+      { duration: 2.5, times: [0, 0.15, 0.85, 1], ease: 'easeInOut' }
+    );
+  }
+
+  // 2. Circle Reveal: Öffnet das Spielfeld aus der Mitte heraus
+  function circleReveal(node: HTMLElement, isRunning: () => boolean) {
+    $effect(() => {
+      if (isRunning()) {
+        // Der Kreis öffnet sich bis auf 150%, um auch die Ecken des Bildschirms auszufüllen
+        animate(
+          node,
+          { clipPath: ['circle(0% at 50% 50%)', 'circle(150% at 50% 50%)'] },
+          { duration: 4.2, ease: [0.22, 1, 0.36, 1] } // Schöne "snappy" easing Kurve
+        );
+      } else {
+        // Solange das Spiel nicht RUNNING ist, halten wir das weiße Feld zu (0%)
+        node.style.clipPath = 'circle(0% at 50% 50%)';
+      }
+    });
+  }
 </script>
 
-<main 
-  class="w-screen h-screen bg-[#f4f4ec] overflow-hidden relative text-slate-900"
-  class:running-cursor={currentGameState.value === GameState.RUNNING}
->
+<div class="w-screen h-screen bg-black relative">
   
-  <svg class="w-full h-full">
-    <defs>
-      <pattern id="dot-grid" width={gridSize} height={gridSize} patternUnits="userSpaceOnUse">
-        <circle cx={gridSize / 2} cy={gridSize / 2} r={dotRadius} class="fill-slate-300" />
-      </pattern>
-    </defs>
-    <rect width="100%" height="100%" fill="url(#dot-grid)" />
-    <g id="network-layer">
+  <main 
+    use:circleReveal={() => currentGameState.value === GameState.RUNNING}
+    class="absolute inset-0 bg-[#f4f4ec] overflow-hidden text-slate-900 z-10"
+    class:running-cursor={currentGameState.value === GameState.RUNNING}
+  >
+    <svg class="w-full h-full">
+      <defs>
+        <pattern id="dot-grid" width={gridSize} height={gridSize} patternUnits="userSpaceOnUse">
+          <circle cx={gridSize / 2} cy={gridSize / 2} r={dotRadius} class="fill-slate-300" />
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#dot-grid)" />
+      <g id="network-layer">
       </g>
-  </svg>
+    </svg>
+  </main>
 
   {#if currentGameState.value !== GameState.RUNNING}
-    <div 
-      class="absolute inset-0 bg-black flex items-center justify-center z-50 transition-all"
-      transition:fade={{ duration: 1000 }}
-    >
+    <div class="absolute inset-0 bg-black flex items-center justify-center z-50">
       {#key currentSplashIndex}
         <img 
+          use:splashAnim
           src={splashSequence[currentSplashIndex]?.src} 
           alt="Splash Logo" 
-          class="absolute max-w-sm h-auto opacity-0 transition-opacity duration-500"
-          style="opacity: 1;" 
-          transition:fade={{ duration: 500 }}
+          class="absolute max-w-sm h-auto"
         />
       {/key}
     </div>
   {/if}
 
-</main>
+</div>
 
 <style lang="postcss">
-  /* Special utility class to apply the custom cursor style */
   .running-cursor {
     cursor: var(--circleCursor);
   }
 
-  /* Define the CSS variable from the Svelte script for use in style tag */
   :global(:root) {
     --circleCursor: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cdefs%3E%3Cfilter id='shadow'%3E%3CfeDropShadow dx='1' dy='1' stdDeviation='1.5' flood-color='rgba(0,0,0,0.3)' /%3E%3C/filter%3E%3C/defs%3E%3Ccircle cx='12' cy='12' r='5' stroke='%2394a3b8' stroke-width='1.5' fill='none' filter='url(%23shadow)' /%3E%3C/svg%3E") 12 12, crosshair;
   }
