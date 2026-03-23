@@ -47,10 +47,76 @@ export function processEngineUpdate(state: NetworkState, simState: SimEngineStat
  * and mutates the current state predictably.
  */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function tick(_state: NetworkState, _simState: SimEngineState): void {
-  // TODO: Hier kommen als nächstes rein:
-  // 1. Zuggeschwindigkeiten und Position updaten (v = a*t)
-  // 2. Blockbelegung prüfen / Signale updaten
-  // 3. Wenn Züge vor rotem Signal -> bremsen
+export function tick(state: NetworkState, _simState: SimEngineState): void {
+  const deltaSecs = MS_PER_TICK / 1000;
+
+  // 1. Züge bewegen
+  for (const train of Object.values(state.trains)) {
+    const track = state.tracks[train.trackId];
+    if (!track) continue;
+
+    // Finde das nächste Signal auf dem aktuellen Track in Fahrtrichtung
+    const upcomingSignals = Object.values(state.signals).filter(s => 
+      s.trackId === train.trackId && 
+      s.direction === train.direction
+    );
+
+    let nextSignal = null;
+    let distanceToSignal = Infinity;
+    
+    for (const signal of upcomingSignals) {
+      const dist = train.direction === 'forward' 
+        ? signal.distanceFromStart - train.distanceOnTrack
+        : train.distanceOnTrack - signal.distanceFromStart;
+        
+      if (dist >= 0 && dist < distanceToSignal) {
+        distanceToSignal = dist;
+        nextSignal = signal;
+      }
+    }
+
+    // Distanz zum Bewegen berechnen
+    const distanceMoved = train.speed * deltaSecs;
+
+    // Halte an Rotem Signal an
+    if (nextSignal && nextSignal.state === 'red' && distanceToSignal <= distanceMoved + 2) {
+      train.speed = 0;
+      // Stopp-Position knapp vor dem Signal einrasten
+      train.distanceOnTrack = train.direction === 'forward' 
+        ? nextSignal.distanceFromStart - 0.1
+        : nextSignal.distanceFromStart + 0.1;
+    } else {
+      // Normale Fahrt fortsetzen
+      train.distanceOnTrack += train.direction === 'forward' ? distanceMoved : -distanceMoved;
+    }
+
+    // Bereichsgrenzen (Gleisende/-anfang) überschritten?
+    if (train.distanceOnTrack > track.length || train.distanceOnTrack < 0) {
+      // TODO: Übergang zum nächsten Track laut Route, momentan nur Stop am Track-Ende
+      train.speed = 0;
+      train.distanceOnTrack = Math.max(0, Math.min(track.length, train.distanceOnTrack));
+    }
+  }
+
+  // 2. Blockbelegung (sehr naiv, basiert auf Zügen pro ID)
+  // Lösche alte Occupation
+  for (const block of Object.values(state.blocks)) {
+    block.occupiedBy = null;
+  }
+  
+  // Setze Occupation
+  for (const train of Object.values(state.trains)) {
+    for (const block of Object.values(state.blocks)) {
+      const aufBlock = block.trackSegments.find(ts => ts.trackId === train.trackId && 
+          train.distanceOnTrack >= ts.start && train.distanceOnTrack <= ts.end);
+      if (aufBlock) {
+        block.occupiedBy = train.id;
+        break; // Sobald Block gefunden
+      }
+    }
+  }
+
+  // 3. Signale (naiv: Wenn Block davor belegt -> Red)
+  // Hier werden wir später Blockbelegung in Signalzustände ummünzen
 }
 
