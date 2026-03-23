@@ -1,28 +1,50 @@
 <script lang="ts">
-    // Hier importieren wir später unseren State
-  </script>
+  import { editorState, setMode, setTool } from './state/editor.svelte';
+  import { networkState } from './state/network.svelte';
+
+  // Raster-Einstellungen
+  const gridSize = 40; // Abstand zwischen den Punkten in Pixeln
+  const dotRadius = 1.5; // Größe der Punkte
+
+  /**
+   * Wir erstellen uns einen benutzerdefinierten Mauszeiger (Zirkel) mit Schatten.
+   * * Um den Schatten unterzubringen, haben wir die Größe des SVGs leicht von 20x20 auf 24x24 erhöht,
+   * damit der Schatten nicht am Rand abgeschnitten wird. Der Hotspot liegt jetzt bei "12 12".
+   * * Wir definieren im <defs> Bereich einen Schatten-Filter:
+   * - <feDropShadow>: dx/dy="1" (Verschiebung), stdDeviation="1.5" (Unschärfe), flood-color (Farbe).
+   * Dann wenden wir den Filter mit filter="url(%23shadow)" auf den Kreis an.
+   */
+  const circleCursor = `url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cdefs%3E%3Cfilter id='shadow'%3E%3CfeDropShadow dx='1' dy='1' stdDeviation='1.5' flood-color='rgba(0,0,0,0.3)' /%3E%3C/filter%3E%3C/defs%3E%3Ccircle cx='12' cy='12' r='5' stroke='%2394a3b8' stroke-width='1.5' fill='none' filter='url(%23shadow)' /%3E%3C/svg%3E") 12 12, crosshair`;
+</script>
+
+<main class="w-screen h-screen bg-[#f4f4ec] overflow-hidden relative text-slate-900">
   
-  <div class="flex h-screen w-screen font-sans">
-    <aside class="w-64 bg-slate-900 border-r border-slate-800 p-4 flex flex-col gap-4 z-10 shadow-xl">
-      <div class="text-xl font-bold tracking-wider text-slate-200 mb-4">RAILSIM</div>
-      
-      <div class="flex flex-col gap-2">
-        <h2 class="text-xs uppercase text-slate-500 font-semibold tracking-widest">Modus</h2>
-        <button class="px-4 py-2 bg-blue-600 hover:bg-blue-500 rounded text-left transition-colors">Bauen</button>
-        <button class="px-4 py-2 bg-slate-800 hover:bg-slate-700 rounded text-left transition-colors text-slate-400">Fahrdienstleiter</button>
-      </div>
-  
-      <div class="flex flex-col gap-2 mt-4">
-        <h2 class="text-xs uppercase text-slate-500 font-semibold tracking-widest">Werkzeuge</h2>
-        <button class="px-4 py-2 bg-slate-800 hover:bg-slate-700 rounded text-left transition-colors">Gleis ziehen</button>
-        <button class="px-4 py-2 bg-slate-800 hover:bg-slate-700 rounded text-left transition-colors">Bahnhof</button>
-        <button class="px-4 py-2 bg-slate-800 hover:bg-slate-700 rounded text-left transition-colors">Signal</button>
-      </div>
-    </aside>
-  
-    <main class="flex-1 relative overflow-hidden bg-slate-950">
-      <div class="absolute inset-0 flex items-center justify-center text-slate-700">
-        Karten-Viewport (SVG)
-      </div>
-    </main>
-  </div>
+  <svg 
+    class="w-full h-full" 
+    style="cursor: {circleCursor}"
+  >
+    
+    <defs>
+      <pattern 
+        id="dot-grid" 
+        width={gridSize} 
+        height={gridSize} 
+        patternUnits="userSpaceOnUse"
+      >
+        <circle 
+          cx={gridSize / 2} 
+          cy={gridSize / 2} 
+          r={dotRadius} 
+          class="fill-slate-300" 
+        />
+      </pattern>
+    </defs>
+
+    <rect width="100%" height="100%" fill="url(#dot-grid)" />
+    
+    <g id="network-layer">
+      </g>
+
+  </svg>
+
+</main>
