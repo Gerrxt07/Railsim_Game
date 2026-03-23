@@ -1,22 +1,16 @@
-// Renderer process entry point (base template)
 import './index.css';
+import { mount } from 'svelte';
+import App from './App.svelte';
 
-const APP_MOUNT_ID = 'template-app';
+const appTarget = document.getElementById('app');
 
-const setBootMessage = (message: string): void => {
-	const mount = document.getElementById(APP_MOUNT_ID);
-	if (!mount) return;
-
-	mount.textContent = message;
-};
-
-const initializeTemplate = (): void => {
-	setBootMessage('Base template ready. Replace this screen with your next game flow.');
-	console.log('Renderer initialized in base template mode.');
-};
-
-if (document.readyState === 'loading') {
-	document.addEventListener('DOMContentLoaded', initializeTemplate, { once: true });
-} else {
-	initializeTemplate();
+if (!appTarget) {
+  throw new Error('Konnte Mount-Point #app nicht finden!');
 }
+
+// Svelte 5 Mount-Syntax
+const app = mount(App, {
+  target: appTarget
+});
+
+export default app;

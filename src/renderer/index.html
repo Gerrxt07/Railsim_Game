@@ -4,65 +4,25 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:">
-  <title>Railsim Base Template</title>
+  <title>Railsim Sandbox</title>
   <style>
     html, body {
       margin: 0;
       padding: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden; /* Verhindert Scrollbalken, da wir später selber pannen/zoomen */
+      background-color: #0f172a; /* Schickes dunkles Slate-Blau als Basis */
+      color: #f8fafc;
+    }
+    #app {
       width: 100%;
       height: 100%;
-      background: radial-gradient(circle at top, #151a2a 0%, #090b11 55%, #05060a 100%);
-      color: #eaf2ff;
-      font-family: Inter, Segoe UI, system-ui, sans-serif;
-    }
-
-    #template-shell {
-      min-height: 100%;
-      display: grid;
-      place-items: center;
-      padding: 2rem;
-      box-sizing: border-box;
-    }
-
-    .template-card {
-      width: min(720px, 100%);
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      border-radius: 18px;
-      padding: 2rem;
-      background: rgba(7, 11, 18, 0.82);
-      backdrop-filter: blur(8px);
-      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.45);
-    }
-
-    .template-kicker {
-      margin: 0;
-      font-size: 0.78rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      opacity: 0.72;
-    }
-
-    .template-title {
-      margin: 0.5rem 0 0;
-      font-size: clamp(1.4rem, 2.6vw, 2.2rem);
-      font-weight: 600;
-    }
-
-    #template-app {
-      margin: 1rem 0 0;
-      line-height: 1.65;
-      opacity: 0.88;
     }
   </style>
 </head>
 <body>
-  <div id="template-shell">
-    <main class="template-card" role="main" aria-label="Base template overview">
-      <p class="template-kicker">Electron + Bun + TypeScript</p>
-      <h1 class="template-title">Railsim Base Template</h1>
-      <p id="template-app">Booting template...</p>
-    </main>
-  </div>
+  <div id="app"></div>
   <script type="module" src="/index.ts"></script>
 </body>
 </html>
