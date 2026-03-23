@@ -1,0 +1,81 @@
+{
+  "name": "railsim-game",
+  "version": "2026.03.23",
+  "description": "Railsim Game",
+  "main": "dist/main/index.js",
+  "author": "Gerrxt",
+  "type": "module",
+  "scripts": {
+    "typecheck": "bunx tsc -p tsconfig.main.json --noEmit && bunx tsc -p tsconfig.renderer.json --noEmit",
+    "lint": "bunx eslint .",
+    "check": "bun run typecheck && bun run lint",
+    "dev": "bun run check && bunx electron-vite dev",
+    "start": "bunx electron-vite preview",
+    "build": "bun run check && bunx electron-vite build",
+    "build:bytecode": "node ./scripts/build-bytecode.cjs",
+    "build:integrity": "node ./scripts/build-integrity-manifest.mjs",
+    "protect": "bun run build:bytecode && bun run build:integrity",
+    "package": "bun run build && bun run protect && bunx electron-builder",
+    "package:win": "bun run build && bun run protect && bunx electron-builder --win",
+    "package:linux": "bun run build && bun run protect && bunx electron-builder --linux",
+    "package:mac": "bun run build && bun run protect && bunx electron-builder --mac"
+  },
+  "keywords": ["electron", "bun", "typescript", "vite"],
+  "license": "MIT",
+  "devDependencies": {
+    "@electron/fuses": "^2.1.0",
+    "@eslint/js": "^10.0.1",
+    "@sveltejs/vite-plugin-svelte": "^6.2.4",
+    "@tailwindcss/vite": "^4.2.2",
+    "@types/bun": "latest",
+    "autoprefixer": "^10.4.27",
+    "electron": "^40.8.3",
+    "electron-builder": "^26.8.1",
+    "electron-vite": "^5.0.0",
+    "eslint": "^10.1.0",
+    "postcss": "^8.5.8",
+    "tailwindcss": "^4.2.2",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.57.1",
+    "vite": "^7.3.1",
+    "vite-plugin-javascript-obfuscator": "^3.1.0"
+  },
+  "dependencies": {
+    "@motionone/dom": "^10.18.0",
+    "bytenode": "^1.5.7",
+    "svelte": "^5.55.0"
+  },
+  "build": {
+    "appId": "com.gerrxt.railsim",
+    "productName": "Railsim",
+    "icon": "src/assets/icon.png",
+    "afterSign": "./scripts/apply-electron-fuses.cjs",
+    "asar": true,
+    "asarUnpack": [
+      "dist/main/**",
+      "dist/preload/**",
+      "dist/renderer/**",
+      "dist/security/**"
+    ],
+    "files": [
+      "dist/**",
+      "package.json"
+    ],
+    "directories": {
+      "output": "release",
+      "buildResources": "build"
+    },
+    "mac": {
+      "icon": "src/assets/icon.png",
+      "target": ["dmg", "zip"]
+    },
+    "win": {
+      "icon": "src/assets/icon.png",
+      "target": ["nsis", "zip"]
+    },
+    "linux": {
+      "icon": "src/assets/icon.png",
+      "target": ["AppImage", "deb"]
+    }
+  }
+}
