@@ -23,6 +23,10 @@ Use lazy loading for heavy modules.
 
 Target zero-copy operations when moving data between Bun and the Electron window.
 
+Architecture Tip: A simulation requires a fixed "tick" (game loop). Run all of this tick logic (train movements, signal status updates) exclusively in the renderer process (or even in a Web Worker within the renderer).
+
+Do not communicate every train tick to the main process via IPC. According to the specifications, the main process (Bun) should only be used for system-related tasks, such as saving the current network to a file using your storage.ts functions.
+
 3. Structural Constraints
 Strict Typing: No any. Use discriminated unions for IPC event payloads to ensure type safety across the bridge.
 
@@ -53,3 +57,4 @@ src/preload/ - Context-isolated IPC bridges.
 src/renderer/ - UI components and frontend logic.
 src/shared/ - Shared TypeScript types and constants.
 src/lib/ - High-performance modular utilities.
+

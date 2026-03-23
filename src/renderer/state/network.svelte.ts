@@ -1,28 +1,41 @@
-export type Node = {
-    id: string;
-    x: number;
-    y: number;
-    type: 'switch' | 'endpoint' | 'waypoint';
+import { createEmptyNetwork, type NetworkState } from '../game/model/network';
+import type { Command, Result } from '../game/commands/types';
+
+/**
+ * Dies ist der reaktive Svelte-State-Container, der die UI antreibt.
+ */
+export const networkStore = $state<{
+  current: NetworkState;
+}>({
+  current: createEmptyNetwork()
+});
+
+/**
+ * Der zentrale Dispatcher, um von der UI-Ebene Änderungen im puren Graph-Modell
+ * kontrolliert durchzuführen. 
+ */
+export function dispatchCommand<TArgs>(
+  command: Command<TArgs>, 
+  args: TArgs
+): Result {
+  // Leite State-Pointer an das abstrahierende Command weiter
+  const ctx = {
+    state: networkStore.current
   };
   
-  export type Edge = {
-    id: string;
-    startNodeId: string;
-    endNodeId: string;
-    // Später wichtig für Zuglogik:
-    length: number; 
-    maxSpeed: number;
-  };
+  const result = command(ctx, args);
   
-  export type Station = {
-    id: string;
-    name: string;
-    edgeIds: string[]; // Gleise, an denen der Bahnsteig liegt
-  };
+  if (!result.success) {
+    console.warn("Command failed: ", result.error);
+  }
   
-  // Unser globaler Graph-State
-  export const networkState = $state({
-    nodes: [] as Node[],
-    edges: [] as Edge[],
-    stations: [] as Station[]
-  });
+  return result;
+}
+
+export function loadNetworkState(newState: NetworkState) {
+  networkStore.current = newState;
+}
+
+export function resetNetworkState() {
+  networkStore.current = createEmptyNetwork();
+}
