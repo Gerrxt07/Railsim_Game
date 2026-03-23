@@ -1,5 +1,5 @@
 import { expect, test, describe } from "bun:test";
-import { createEmptyNetwork, type NetworkState } from "../model/network";
+import { createEmptyNetwork } from "../model/network";
 import { validateNetwork } from "../validators/network";
 
 describe("Network Validator", () => {

@@ -1,6 +1,6 @@
 // Defines how state mutations should happen
 import type { Command } from './types';
-import type { Position, Signal } from '../model/network';
+import type { Signal } from '../model/network';
 import { generateId } from '../utils/id';
 import { recalculateAllBlocks } from '../sim/blockBuilder';
 

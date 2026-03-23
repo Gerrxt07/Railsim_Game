@@ -46,7 +46,8 @@ export function processEngineUpdate(state: NetworkState, simState: SimEngineStat
  * It takes the current network state, applies exactly ONE tick of physics/logic, 
  * and mutates the current state predictably.
  */
-export function tick(state: NetworkState, simState: SimEngineState): void {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export function tick(_state: NetworkState, _simState: SimEngineState): void {
   // TODO: Hier kommen als nächstes rein:
   // 1. Zuggeschwindigkeiten und Position updaten (v = a*t)
   // 2. Blockbelegung prüfen / Signale updaten
