@@ -43,6 +43,7 @@
   "dependencies": {
     "@motionone/dom": "^10.18.0",
     "bytenode": "^1.5.7",
+    "motion": "^12.38.0",
     "svelte": "^5.55.0"
   },
   "build": {
