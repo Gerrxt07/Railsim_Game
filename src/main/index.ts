@@ -7,7 +7,7 @@ import os from 'node:os';
 import { dirname, join } from 'node:path';
 import { registerAppControlIpc } from './ipc/app-control';
 import { fileExists, readJson, writeJson } from '../lib';
-import { initMainLogging } from './logging';
+import { appendMainLog, initMainLogging } from './logging';
 import {
   APPLY_VIDEO_MODE_CHANNEL,
   type ApplyVideoModeRequest,
@@ -34,6 +34,8 @@ import {
   CREATE_SAVE_CHANNEL,
   DELETE_SAVE_CHANNEL,
   LOAD_SAVE_CHANNEL,
+  LOG_MESSAGE_CHANNEL,
+  type LogMessageRequest,
   type ListSavesResponse,
   type CreateSaveRequest,
   type CreateSaveResponse,
@@ -350,6 +352,10 @@ app.whenReady().then(() => {
 
   ipcMain.handle(GET_APP_VERSION_CHANNEL, (): GetAppVersionResponse => {
     return app.getVersion();
+  });
+
+  ipcMain.on(LOG_MESSAGE_CHANNEL, (_event, request: LogMessageRequest) => {
+    appendMainLog(app, request.level, request.message, request.context);
   });
 
   ipcMain.handle(GET_OS_BUILD_INFO_CHANNEL, (): GetOsBuildInfoResponse => {

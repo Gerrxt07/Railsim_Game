@@ -32,6 +32,8 @@ import {
   type DeleteSaveResponse,
   type LoadSaveRequest,
   type LoadSaveResponse,
+  LOG_MESSAGE_CHANNEL,
+  type LogMessageRequest,
 } from '../shared';
 
 // Expose protected methods that allow the renderer process to use
@@ -52,6 +54,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
   createSave: (playerName: string): Promise<CreateSaveResponse> => ipcRenderer.invoke(CREATE_SAVE_CHANNEL, { playerName } satisfies CreateSaveRequest),
   deleteSave: (filename: string): Promise<DeleteSaveResponse> => ipcRenderer.invoke(DELETE_SAVE_CHANNEL, { filename } satisfies DeleteSaveRequest),
   loadSave: (filename: string): Promise<LoadSaveResponse> => ipcRenderer.invoke(LOAD_SAVE_CHANNEL, { filename } satisfies LoadSaveRequest),
+  logMessage: (request: LogMessageRequest): void => ipcRenderer.send(LOG_MESSAGE_CHANNEL, request),
 });
 
 exposeAppControl();

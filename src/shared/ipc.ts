@@ -8,6 +8,14 @@ export const GET_OS_BUILD_INFO_CHANNEL = 'get-os-build-info' as const;
 export const GET_DISPLAY_OPTIONS_CHANNEL = 'get-display-options' as const;
 export const APPLY_VIDEO_MODE_CHANNEL = 'apply-video-mode' as const;
 export const OPEN_EXTERNAL_URL_CHANNEL = 'open-external-url' as const;
+export const LOG_MESSAGE_CHANNEL = 'log-message' as const;
+
+export type LogLevel = 'debug' | 'info' | 'warn' | 'error';
+export type LogMessageRequest = {
+	level: LogLevel;
+	message: string;
+	context?: string;
+};
 
 export const LIST_SAVES_CHANNEL = 'list-saves' as const;
 export const CREATE_SAVE_CHANNEL = 'create-save' as const;

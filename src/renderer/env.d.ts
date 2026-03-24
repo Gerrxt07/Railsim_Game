@@ -16,6 +16,7 @@ interface Window {
                 createSave: (playerName: string) => Promise<import("../shared").CreateSaveResponse>;
                 deleteSave: (filename: string) => Promise<import("../shared").DeleteSaveResponse>;
                 loadSave: (filename: string) => Promise<import("../shared").LoadSaveResponse>;
+                logMessage: (request: import("../shared").LogMessageRequest) => void;
         };
         appControl?: {
                 quit: () => Promise<import("../shared").AppControlResponse>;

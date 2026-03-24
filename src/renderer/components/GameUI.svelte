@@ -9,10 +9,15 @@
   // State to handle the transient popup
   let showSpeedPopup = $state(false);
   let popupTimeout: ReturnType<typeof setTimeout>;
+  let initializedEffect = false;
   
   $effect(() => {
     // Triggers when simState.speed changes
     const _ = simState.speed;
+    if (!initializedEffect) {
+      initializedEffect = true;
+      return;
+    }
     if (uiState.showSpeedPopups) {
       showSpeedPopup = true;
       clearTimeout(popupTimeout);

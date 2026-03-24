@@ -25,7 +25,7 @@ export const uiState = $state({
 });
 
 export const simState = $state({
-  speed: 1,
+  speed: 0,
   previousSpeed: 1
 });
 

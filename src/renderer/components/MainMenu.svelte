@@ -87,7 +87,7 @@
     {:else if activeMenu === 'new_game'}
       <div in:fade class="flex flex-col items-center gap-6">
         <h2 class="text-2xl font-light tracking-widest text-slate-800 uppercase">{t('playmenu.newGame')}</h2>
-        <input type="text" bind:value={playerName} placeholder={t('playmenu.enterName')} class="px-6 py-4 bg-white/50 border border-slate-300 rounded-xl shadow-inner text-xl focus:outline-none focus:ring-2 focus:ring-green-500 placeholder:text-slate-400" />
+        <input type="text" bind:value={playerName} placeholder={t('playmenu.enterName')} class="px-6 py-4 bg-white/50 border border-slate-300 rounded-xl shadow-inner text-xl text-slate-900 text-center focus:outline-none focus:ring-2 focus:ring-green-500 placeholder:text-slate-400" />
         <div class="flex gap-4 mt-4">
           <button onclick={() => navTo('play')} class="px-6 py-2 text-slate-500 hover:text-slate-800 uppercase tracking-widest transition-colors">{t('playmenu.back')}</button>
           <button onclick={createGame} disabled={!playerName.trim()} class="px-6 py-2 bg-green-500 hover:bg-green-600 disabled:bg-green-300 text-white rounded-lg shadow uppercase tracking-widest transition-all">{t('playmenu.start')}</button>
