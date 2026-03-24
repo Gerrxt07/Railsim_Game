@@ -30,7 +30,20 @@ import {
   type OpenExternalUrlResponse,
   type SaveLanguageRequest,
   type SaveLanguageResponse,
+  LIST_SAVES_CHANNEL,
+  CREATE_SAVE_CHANNEL,
+  DELETE_SAVE_CHANNEL,
+  LOAD_SAVE_CHANNEL,
+  type ListSavesResponse,
+  type CreateSaveRequest,
+  type CreateSaveResponse,
+  type DeleteSaveRequest,
+  type DeleteSaveResponse,
+  type LoadSaveRequest,
+  type LoadSaveResponse,
 } from '../shared';
+
+import { readdirSync, unlinkSync } from 'node:fs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -247,9 +260,9 @@ const createWindow = (): void => {
     show: false,
   });
 
-  if (!app.isPackaged) {
-    mainWindow.webContents.openDevTools();
-  }
+  // if (!app.isPackaged) {
+  //   mainWindow.webContents.openDevTools();
+  // }
 
   if (app.isPackaged) {
     applyPackagedSecurity(mainWindow);
@@ -410,6 +423,99 @@ app.whenReady().then(() => {
         ok: false,
         error: error instanceof Error ? error.message : 'Failed to open URL',
       };
+    }
+  });
+
+  const savesDir = join(app.getPath('userData'), 'saves');
+  if (!existsSync(savesDir)) {
+    mkdirSync(savesDir, { recursive: true });
+  }
+
+  ipcMain.handle(LIST_SAVES_CHANNEL, async (): Promise<ListSavesResponse> => {
+    try {
+      const files = readdirSync(savesDir).filter(f => f.endsWith('.json'));
+      const saves = [];
+      for (const file of files) {
+        const filePath = join(savesDir, file);
+        const content = readFileSync(filePath, 'utf8');
+        try {
+          const data = JSON.parse(content);
+          if (data && data.meta) {
+            saves.push({
+              filename: file,
+              playerName: data.meta.playerName || 'Unknown',
+              createdAt: data.meta.createdAt,
+              updatedAt: data.meta.updatedAt
+            });
+          }
+        } catch {
+          // ignore corrupted saves in list
+        }
+      }
+      return saves.sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
+    } catch {
+      return [];
+    }
+  });
+
+  ipcMain.handle(CREATE_SAVE_CHANNEL, async (_event, request: CreateSaveRequest): Promise<CreateSaveResponse> => {
+    try {
+      const date = new Date();
+      const dateString = date.toISOString().replace(/[:.]/g, '-');
+      const filename = `${request.playerName.replace(/[^a-zA-Z0-9_-]/g, '')}_${dateString}.json`;
+      const filePath = join(savesDir, filename);
+
+      const newSave = {
+        version: 1,
+        meta: {
+          version: 1,
+          playerName: request.playerName,
+          createdAt: date.toISOString(),
+          updatedAt: date.toISOString()
+        },
+        network: {
+          nodes: [],
+          edges: []
+        },
+        simulation: {
+          trains: [],
+          tickCount: 0
+        }
+      };
+
+      await writeJson(filePath, newSave);
+      return { ok: true, filename };
+    } catch (e) {
+      return { ok: false, error: String(e) };
+    }
+  });
+
+  ipcMain.handle(DELETE_SAVE_CHANNEL, async (_event, request: DeleteSaveRequest): Promise<DeleteSaveResponse> => {
+    try {
+      const filePath = join(savesDir, request.filename);
+      unlinkSync(filePath);
+      return { ok: true };
+    } catch (e) {
+      return { ok: false, error: String(e) };
+    }
+  });
+
+  ipcMain.handle(LOAD_SAVE_CHANNEL, async (_event, request: LoadSaveRequest): Promise<LoadSaveResponse> => {
+    try {
+      const filePath = join(savesDir, request.filename);
+      const data = await readJson<unknown>(filePath);
+      
+      // Update last played time
+      if (data && typeof data === 'object' && 'meta' in data) {
+        const d = data as { meta: { updatedAt: string } };
+        if (d.meta) {
+          d.meta.updatedAt = new Date().toISOString();
+          await writeJson(filePath, data);
+        }
+      }
+      return { ok: true, data };
+    } catch (e) {
+      return { ok: false, error: String(e) };
     }
   });
 

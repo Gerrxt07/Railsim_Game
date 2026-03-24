@@ -1,6 +1,6 @@
 {
   "name": "railsim-game",
-  "version": "2026.03.23",
+  "version": "2026.03.24",
   "description": "Railsim Game",
   "main": "dist/main/index.js",
   "author": "Gerrxt",
@@ -36,13 +36,14 @@
     "postcss": "^8.5.8",
     "tailwindcss": "^4.2.2",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.57.1",
+    "typescript-eslint": "^8.57.2",
     "vite": "^7.3.1",
     "vite-plugin-javascript-obfuscator": "^3.1.0"
   },
   "dependencies": {
     "@motionone/dom": "^10.18.0",
     "bytenode": "^1.5.7",
+    "lucide-svelte": "^1.0.1",
     "motion": "^12.38.0",
     "pixi.js": "^8.17.1",
     "svelte": "^5.55.0"

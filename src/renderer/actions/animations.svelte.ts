@@ -34,12 +34,13 @@ export function circleReveal(node: HTMLElement, isRunning: () => boolean) {
 }
 
 // 3. Main Menu Item Reveal
-export function menuItemAnim(node: HTMLElement, index: number) {
+export function menuItemAnim(node: HTMLElement, options: { index: number, skipDelay: boolean }) {
   node.style.opacity = '0';
   node.style.transform = 'translateY(20px)';
+  const baseDelay = options.skipDelay ? 0 : 1.5;
   animate(
     node,
     { opacity: [0, 1], y: [20, 0] },
-    { duration: 1.2, delay: 1.5 + index * 0.25, ease: 'easeOut' }
+    { duration: 1.2, delay: baseDelay + options.index * 0.25, ease: 'easeOut' }
   );
 }

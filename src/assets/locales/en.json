@@ -1,0 +1,28 @@
+{
+  "menu.play": "Play",
+  "menu.settings": "Settings",
+  "menu.quit": "Quit",
+
+  "settings.title": "Settings",
+  "settings.appearance": "Appearance",
+  "settings.language": "Language",
+  "settings.eyeFriendly": "Eye-friendly Mode",
+  "settings.showSpeedPopups": "Show Speed Popups",
+  "settings.developer": "Developer Settings",
+  "settings.showDebugGrid": "Show Debugging",
+  "settings.consoleEnabled": "Developer Console (On/Off)",
+  "settings.consoleHotkey": "Console Hotkey",
+  "settings.backToMenu": "Back To Main Menu",
+
+  "playmenu.newGame": "New Game",
+  "playmenu.loadGame": "Load Game",
+  "playmenu.deleteSave": "Delete Save",
+  "playmenu.back": "Back",
+  "playmenu.enterName": "Enter Player Name",
+  "playmenu.start": "Start",
+  "playmenu.lastPlayed": "Last played:",
+  "playmenu.noSaves": "No saved games",
+
+  "mode.build": "Build",
+  "mode.dispatch": "Dispatch"
+}

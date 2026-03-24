@@ -1,0 +1,28 @@
+{
+  "menu.play": "Spielen",
+  "menu.settings": "Einstellungen",
+  "menu.quit": "Verlassen",
+
+  "settings.title": "Einstellungen",
+  "settings.appearance": "Darstellung",
+  "settings.language": "Sprache",
+  "settings.eyeFriendly": "Augenfreundlicher Modus",
+  "settings.showSpeedPopups": "Geschwindigkeit-Popups",
+  "settings.developer": "Entwicklereinstellungen",
+  "settings.showDebugGrid": "Debug-Infos anzeigen",
+  "settings.consoleEnabled": "Entwicklerkonsole (an/aus)",
+  "settings.consoleHotkey": "Konsolenhotkey",
+  "settings.backToMenu": "Zum Hauptmenü Zurück",
+
+  "playmenu.newGame": "Neues Spiel",
+  "playmenu.loadGame": "Spiel Laden",
+  "playmenu.deleteSave": "Spielstand Löschen",
+  "playmenu.back": "Zurück",
+  "playmenu.enterName": "Spielername eingeben",
+  "playmenu.start": "Starten",
+  "playmenu.lastPlayed": "Zuletzt gespielt:",
+  "playmenu.noSaves": "Keine Spielstände vorhanden",
+
+  "mode.build": "Baumodus",
+  "mode.dispatch": "Stellwerk"
+}

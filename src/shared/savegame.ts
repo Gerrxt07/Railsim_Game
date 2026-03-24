@@ -5,6 +5,7 @@ import type { SimEngineState } from '../renderer/game/sim/tick';
 // Eine versionierte Metadaten-Struktur
 export interface SaveGameMeta {
   version: number;
+  playerName?: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -32,11 +33,12 @@ export function migrateToLatest(savegame: unknown): SaveGame {
   throw new Error(`Unsupported savegame structure`);
 }
 
-export function createNewSavegame(network: NetworkState, simulation: SimEngineState): SaveGame {
+export function createNewSavegame(network: NetworkState, simulation: SimEngineState, playerName: string = 'Player'): SaveGame {
   return {
     version: 1,
     meta: {
       version: 1,
+      playerName,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     },

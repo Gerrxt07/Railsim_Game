@@ -9,6 +9,44 @@ export const GET_DISPLAY_OPTIONS_CHANNEL = 'get-display-options' as const;
 export const APPLY_VIDEO_MODE_CHANNEL = 'apply-video-mode' as const;
 export const OPEN_EXTERNAL_URL_CHANNEL = 'open-external-url' as const;
 
+export const LIST_SAVES_CHANNEL = 'list-saves' as const;
+export const CREATE_SAVE_CHANNEL = 'create-save' as const;
+export const DELETE_SAVE_CHANNEL = 'delete-save' as const;
+export const LOAD_SAVE_CHANNEL = 'load-save' as const;
+
+export type SaveFileMeta = {
+        filename: string;
+        playerName: string;
+        createdAt: string;
+        updatedAt: string;
+};
+
+export type ListSavesResponse = SaveFileMeta[];
+
+export type CreateSaveRequest = {
+        playerName: string;
+};
+
+export type CreateSaveResponse =
+        | { ok: true; filename: string }
+        | { ok: false; error: string };
+
+export type DeleteSaveRequest = {
+        filename: string;
+};
+
+export type DeleteSaveResponse =
+        | { ok: true }
+        | { ok: false; error: string };
+
+export type LoadSaveRequest = {
+        filename: string;
+};
+
+export type LoadSaveResponse =
+        | { ok: true; data: unknown }
+        | { ok: false; error: string };
+
 export const SUPPORTED_LANGUAGES = ['en', 'de'] as const;
 export type Language = (typeof SUPPORTED_LANGUAGES)[number];
 
