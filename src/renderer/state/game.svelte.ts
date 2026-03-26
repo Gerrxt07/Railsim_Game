@@ -29,6 +29,12 @@ export const simState = $state({
   previousSpeed: 1
 });
 
+export const viewState = $state({
+  x: 0,
+  y: 0,
+  zoom: 1
+});
+
 export const setSimSpeed = (newSpeed: number) => {
   simState.speed = newSpeed;
 };

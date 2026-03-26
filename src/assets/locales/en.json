@@ -13,16 +13,48 @@
   "settings.consoleEnabled": "Developer Console (On/Off)",
   "settings.consoleHotkey": "Console Hotkey",
   "settings.backToMenu": "Back To Main Menu",
+  "settings.other": "Other",
 
   "playmenu.newGame": "New Game",
   "playmenu.loadGame": "Load Game",
   "playmenu.deleteSave": "Delete Save",
+  "playmenu.multiplayer": "Multiplayer",
   "playmenu.back": "Back",
   "playmenu.enterName": "Enter Player Name",
   "playmenu.start": "Start",
   "playmenu.lastPlayed": "Last played:",
   "playmenu.noSaves": "No saved games",
+  "playmenu.wip": "WIP - Not available now",
+
+  "settings.liveKey": "Live Key",
 
   "mode.build": "Build",
-  "mode.dispatch": "Dispatch"
+  "mode.dispatch": "Dispatch",
+
+  "toolbar.category.navigation": "Navigation",
+  "toolbar.category.infrastructure": "Infrastructure",
+  "toolbar.category.maintenance": "Maintenance",
+  "toolbar.category.analysis": "Analysis",
+
+  "toolbar.tool.select": "Select",
+  "toolbar.tool.multiselect": "Box / Multiselect",
+  "toolbar.tool.inspect": "Inspect",
+
+  "toolbar.tool.track": "Track (Straight, Curve, switch)",
+  "toolbar.tool.station": "Station",
+  "toolbar.tool.signal": "Signal",
+  "toolbar.tool.depot": "Depot",
+
+  "toolbar.tool.delete": "Delete",
+  "toolbar.tool.move": "Move",
+  "toolbar.tool.split": "Split",
+  "toolbar.tool.merge": "Merge / Connect",
+  "toolbar.tool.replace": "Replace",
+
+  "toolbar.tool.show_track_id": "Show Track ID",
+  "toolbar.tool.show_node_id": "Show Node ID",
+  "toolbar.tool.block_overlay": "Block Overlay",
+  "toolbar.tool.signal_info": "Signals (Distances/Directions)",
+  "toolbar.tool.path_preview": "Path Preview",
+  "toolbar.tool.validation_overlay": "Validation Overlay"
 }

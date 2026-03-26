@@ -91,12 +91,17 @@
       <section>
         <h3 class="text-xs font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500 mb-4">{t('settings.developer')}</h3>
         <div class="space-y-4">
-          <button class="w-full flex items-center justify-between group cursor-pointer focus:outline-none">
-            <span class="group-hover:text-slate-900 transition-colors">{t('settings.showDebugGrid')}</span>
-            <div class="w-10 h-5 bg-slate-300 dark:bg-slate-400 rounded-full relative shadow-inner">
-              <div class="absolute left-0.5 top-0.5 w-4 h-4 bg-white rounded-full shadow"></div>
+          <div class="relative group">
+            <button class="w-full flex items-center justify-between cursor-not-allowed opacity-50" disabled>
+              <span class="transition-colors">{t('settings.showDebugGrid')}</span>
+              <div class="w-10 h-5 bg-slate-300 dark:bg-slate-400 rounded-full relative shadow-inner">
+                <div class="absolute left-0.5 top-0.5 w-4 h-4 bg-white rounded-full shadow"></div>
+              </div>
+            </button>
+            <div class="absolute top-1/2 -translate-y-1/2 right-12 z-50 opacity-0 group-hover:opacity-100 transition-opacity bg-black/80 backdrop-blur-sm text-white px-3 py-1.5 rounded-lg text-xs whitespace-nowrap pointer-events-none shadow-lg border border-slate-700 tracking-widest uppercase font-bold">
+              {t('playmenu.wip' as Parameters<typeof t>[0])}
             </div>
-          </button>
+          </div>
           
           <button 
             class="w-full flex items-center justify-between group cursor-pointer focus:outline-none"
@@ -132,7 +137,22 @@
       </section>
 
       <!-- System -->
-      <section class="mt-auto pt-8 border-t border-slate-200 dark:border-slate-400/50">
+      <section class="mt-auto pt-8 border-t border-slate-200 dark:border-slate-400/50 flex flex-col gap-6">
+        <div class="w-full flex flex-col gap-2 relative group text-center">
+          <span class="text-slate-600 dark:text-slate-800 transition-colors opacity-50 font-bold tracking-wide text-center">{t('settings.liveKey' as Parameters<typeof t>[0])}</span>
+          <div class="relative flex items-center opacity-50 justify-center w-full">
+            <input 
+              type="password" 
+              class="w-full text-center h-10 px-3 bg-slate-100 dark:bg-slate-200 border border-slate-300 dark:border-slate-400 shadow-inner rounded-lg text-slate-900 focus:outline-none cursor-not-allowed text-sm font-mono tracking-widest"
+              value="live_xxx_xxxxxxxxxxxx"
+              disabled
+            />
+          </div>
+          <div class="absolute top-1/2 -translate-y-1/2 right-4 z-50 opacity-0 group-hover:opacity-100 transition-opacity bg-black/80 backdrop-blur-sm text-white px-3 py-1.5 rounded-lg text-xs whitespace-nowrap pointer-events-none shadow-lg border border-slate-700 tracking-widest uppercase font-bold">
+            {t('playmenu.wip' as Parameters<typeof t>[0])}
+          </div>
+        </div>
+
         <button 
           class="w-full flex items-center justify-center p-3 rounded-lg border border-red-200 dark:border-red-300/30 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-700 transition-all duration-300 font-semibold uppercase tracking-widest text-sm"
           onclick={() => {

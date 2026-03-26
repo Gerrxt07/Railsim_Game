@@ -82,6 +82,17 @@
       <button in:fade onclick={() => navTo('new_game')} class="menu-item text-3xl font-light tracking-[0.2em] text-slate-800 hover:text-green-500 transition-colors uppercase">{t('playmenu.newGame')}</button>
       <button in:fade onclick={() => navTo('load_game')} class="menu-item text-3xl font-light tracking-[0.2em] transition-colors uppercase {saves.length === 0 ? 'text-slate-400 cursor-not-allowed' : 'text-slate-800 hover:text-yellow-600'}" disabled={saves.length === 0}>{t('playmenu.loadGame')}</button>
       <button in:fade onclick={() => navTo('delete_save')} class="menu-item text-3xl font-light tracking-[0.2em] transition-colors uppercase {saves.length === 0 ? 'text-slate-400 cursor-not-allowed' : 'text-slate-800 hover:text-red-500'}" disabled={saves.length === 0}>{t('playmenu.deleteSave')}</button>
+      
+      <div class="w-64 h-px bg-slate-300 dark:bg-slate-400" in:fade></div>
+
+      <div class="relative group" in:fade>
+        <button class="menu-item text-3xl font-light tracking-[0.2em] uppercase text-slate-400 cursor-not-allowed" disabled>{t('playmenu.multiplayer') as Parameters<typeof t>[0]}</button>
+        <div class="absolute left-full top-1/2 -translate-y-1/2 ml-4 opacity-0 group-hover:opacity-100 transition-opacity bg-black/80 backdrop-blur-sm text-white px-4 py-2 rounded-lg text-sm whitespace-nowrap pointer-events-none shadow-lg border border-slate-700 font-bold tracking-widest uppercase">
+          {t('playmenu.wip') as Parameters<typeof t>[0]}
+          <div class="absolute -left-1.5 top-1/2 -translate-y-1/2 w-3 h-3 bg-black/80 border-l border-b border-slate-700 rotate-45 z-[-1]"></div>
+        </div>
+      </div>
+
       <button in:fade onclick={() => navTo('main')} class="menu-item text-xl mt-8 font-light tracking-[0.2em] text-slate-600 hover:text-slate-900 transition-colors uppercase">{t('playmenu.back')}</button>
 
     {:else if activeMenu === 'new_game'}

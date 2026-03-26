@@ -1,6 +1,7 @@
 <script lang="ts">
   import ModeToggle from './ModeToggle.svelte';
   import TimeControls from './TimeControls.svelte';
+  import BuildToolbar from './BuildToolbar.svelte';
   import { toggleSettings, simState, uiState } from '../state/game.svelte';
   import { fly, fade } from 'svelte/transition';
   import { backOut } from 'svelte/easing';
@@ -32,6 +33,7 @@
      in:fly={{ y: -40, opacity: 0, duration: 800, delay: 100, easing: backOut }}
      out:fly={{ y: -40, opacity: 0, duration: 400 }}
 >
+  <BuildToolbar />
   <div class="pointer-events-auto flex w-full justify-center pt-6 relative">
     <ModeToggle />
 

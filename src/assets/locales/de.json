@@ -13,16 +13,48 @@
   "settings.consoleEnabled": "Entwicklerkonsole (an/aus)",
   "settings.consoleHotkey": "Konsolenhotkey",
   "settings.backToMenu": "Zum Hauptmenü Zurück",
+  "settings.other": "Weiteres",
 
   "playmenu.newGame": "Neues Spiel",
   "playmenu.loadGame": "Spiel Laden",
   "playmenu.deleteSave": "Spielstand Löschen",
+  "playmenu.multiplayer": "Mehrspieler",
   "playmenu.back": "Zurück",
   "playmenu.enterName": "Spielername eingeben",
   "playmenu.start": "Starten",
   "playmenu.lastPlayed": "Zuletzt gespielt:",
   "playmenu.noSaves": "Keine Spielstände vorhanden",
+  "playmenu.wip": "WIP - Aktuell nicht verfügbar",
+
+  "settings.liveKey": "Live Key",
 
   "mode.build": "Baumodus",
-  "mode.dispatch": "Stellwerk"
+  "mode.dispatch": "Stellwerk",
+
+  "toolbar.category.navigation": "Navigation",
+  "toolbar.category.infrastructure": "Infrastruktur",
+  "toolbar.category.maintenance": "Wartung",
+  "toolbar.category.analysis": "Analyse",
+
+  "toolbar.tool.select": "Auswählen",
+  "toolbar.tool.multiselect": "Box / Mehrfachauswahl",
+  "toolbar.tool.inspect": "Untersuchen",
+
+  "toolbar.tool.track": "Gleis (Gerade, Kurve, Weiche)",
+  "toolbar.tool.station": "Bahnhof",
+  "toolbar.tool.signal": "Signal",
+  "toolbar.tool.depot": "Depot",
+
+  "toolbar.tool.delete": "Löschen",
+  "toolbar.tool.move": "Bewegen",
+  "toolbar.tool.split": "Trennen",
+  "toolbar.tool.merge": "Zusammenfügen / Verbinden",
+  "toolbar.tool.replace": "Ersetzen",
+
+  "toolbar.tool.show_track_id": "Gleis-ID anzeigen",
+  "toolbar.tool.show_node_id": "Knoten-ID anzeigen",
+  "toolbar.tool.block_overlay": "Block-Overlay",
+  "toolbar.tool.signal_info": "Signale (Abstände/Richtungen)",
+  "toolbar.tool.path_preview": "Pfadvorschau",
+  "toolbar.tool.validation_overlay": "Validierungs-Overlay"
 }
