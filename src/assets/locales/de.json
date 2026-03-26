@@ -12,6 +12,7 @@
   "settings.showDebugGrid": "Debug-Infos anzeigen",
   "settings.consoleEnabled": "Entwicklerkonsole (an/aus)",
   "settings.consoleHotkey": "Konsolenhotkey",
+  "settings.showTutorial": "Tutorial anzeigen",
   "settings.backToMenu": "Zum Hauptmenü Zurück",
   "settings.other": "Weiteres",
 
@@ -56,5 +57,19 @@
   "toolbar.tool.block_overlay": "Block-Overlay",
   "toolbar.tool.signal_info": "Signale (Abstände/Richtungen)",
   "toolbar.tool.path_preview": "Pfadvorschau",
-  "toolbar.tool.validation_overlay": "Validierungs-Overlay"
+  "toolbar.tool.validation_overlay": "Validierungs-Overlay",
+
+  "tutorial.prompt.title": "Willkommen bei RailSim",
+  "tutorial.prompt.message": "Möchtest du eine kurze Einführung in die grundlegenden Steuerungen ansehen?",
+  "tutorial.prompt.yes": "Ja, bitte",
+  "tutorial.prompt.no": "Nein, überspringen",
+
+  "tutorial.title": "Grundlegende Steuerung",
+  "tutorial.close": "Schließen",
+  "tutorial.section.camera.title": "Kamerabewegung",
+  "tutorial.section.camera.desc": "Verwende `Mittleren Mausklick` oder `Rechtsklick` + `Ziehen`, um über die Karte zu bewegen. Scrolle mit dem `Mausrad`, um hinein- und herauszuzoomen.",
+  "tutorial.section.modes.title": "Interaktionsmodi",
+  "tutorial.section.modes.desc": "Drücke die `LEERTASTE`, um zwischen Baumodus und Stellwerk zu wechseln. Verwende `Tab`, um durch die Zeit zu wechseln.",
+  "tutorial.section.console.title": "Entwicklerkonsole",
+  "tutorial.section.console.desc": "Drücke `{hotkey}` um die Entwicklerkonsole zu öffnen (falls aktiviert)."
 }

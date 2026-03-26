@@ -21,7 +21,9 @@ export const uiState = $state({
   theme: savedTheme || 'light',
   language: savedLang || 'en',
   showSpeedPopups: savedPopups,
-  hasPlayedIntro: false
+  hasPlayedIntro: false,
+  showTutorialPrompt: false, // newly created game needs tutorial?
+  showTutorial: false        // actively showing the tutorial overlay?
 });
 
 export const simState = $state({

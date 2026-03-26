@@ -3,6 +3,7 @@
   import TimeControls from './TimeControls.svelte';
   import BuildToolbar from './BuildToolbar.svelte';
   import { toggleSettings, simState, uiState } from '../state/game.svelte';
+  import { hoverBounce, tapPulse } from '../actions/animations.svelte';
   import { fly, fade } from 'svelte/transition';
   import { backOut } from 'svelte/easing';
   import { Settings } from 'lucide-svelte';
@@ -44,7 +45,9 @@
 
       <!-- Settings Button -->
       <button 
-        class="w-10 h-10 flex items-center justify-center rounded-full bg-[#f4f4ec] dark:bg-[#c7c7be] border border-slate-300 dark:border-slate-400 shadow-[inset_0_-2px_4px_rgba(0,0,0,0.05),0_4px_8px_-2px_rgba(0,0,0,0.1)] transition-all duration-300 hover:shadow-[inset_0_-2px_4px_rgba(0,0,0,0.05),0_6px_12px_-2px_rgba(0,0,0,0.15)] active:shadow-[inset_0_2px_4px_rgba(0,0,0,0.1)] active:translate-y-px text-slate-600 hover:text-slate-900 focus:outline-none"
+        use:hoverBounce
+        use:tapPulse
+        class="w-10 h-10 flex items-center justify-center rounded-full bg-[#f4f4ec] dark:bg-[#c7c7be] border border-slate-300 dark:border-slate-400 shadow-[inset_0_-2px_4px_rgba(0,0,0,0.05),0_4px_8px_-2px_rgba(0,0,0,0.1)] transition-colors duration-300 pointer-events-auto text-slate-600 hover:text-slate-900 focus:outline-none cursor-pointer"
         onclick={() => toggleSettings(true)}
         aria-label="Open Settings"
       >

@@ -1,5 +1,6 @@
 <script lang="ts">
   import { editorState, setMode } from '../state/editor.svelte';
+  import { hoverBounce, tapPulse } from '../actions/animations.svelte';
   import { t } from '../state/i18n.svelte';
   import { fly } from 'svelte/transition';
 
@@ -11,8 +12,15 @@
   // Keyboard shortcut listener (optional, but requested implicitly via "1 & 2")
   $effect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
+      // Ignore if typing in an input
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
+
       if (e.key === '1') setMode('BUILD');
       if (e.key === '2') setMode('DISPATCH');
+      if (e.code === 'Space') {
+        e.preventDefault();
+        toggleMode();
+      }
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
@@ -20,7 +28,9 @@
 </script>
 
 <button
-  class="relative flex items-center justify-center w-36 h-10 rounded-full bg-[#f4f4ec] dark:bg-[#c7c7be] border border-slate-300 dark:border-slate-400 shadow-[inset_0_-2px_4px_rgba(0,0,0,0.05),0_4px_8px_-2px_rgba(0,0,0,0.1)] transition-all duration-300 hover:shadow-[inset_0_-2px_4px_rgba(0,0,0,0.05),0_6px_12px_-2px_rgba(0,0,0,0.15)] active:shadow-[inset_0_2px_4px_rgba(0,0,0,0.1)] active:translate-y-px cursor-pointer focus:outline-none overflow-hidden"
+  use:hoverBounce
+  use:tapPulse
+  class="relative flex items-center justify-center w-36 h-10 rounded-full bg-[#f4f4ec] dark:bg-[#c7c7be] border border-slate-300 dark:border-slate-400 shadow-[inset_0_-2px_4px_rgba(0,0,0,0.05),0_4px_8px_-2px_rgba(0,0,0,0.1)] transition-colors duration-300 cursor-pointer focus:outline-none overflow-hidden"
   onclick={toggleMode}
 >
   <!-- Subtle colored background indicator that slides from the bottom -->

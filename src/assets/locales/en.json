@@ -12,6 +12,7 @@
   "settings.showDebugGrid": "Show Debugging",
   "settings.consoleEnabled": "Developer Console (On/Off)",
   "settings.consoleHotkey": "Console Hotkey",
+  "settings.showTutorial": "Show Tutorial",
   "settings.backToMenu": "Back To Main Menu",
   "settings.other": "Other",
 
@@ -56,5 +57,19 @@
   "toolbar.tool.block_overlay": "Block Overlay",
   "toolbar.tool.signal_info": "Signals (Distances/Directions)",
   "toolbar.tool.path_preview": "Path Preview",
-  "toolbar.tool.validation_overlay": "Validation Overlay"
+  "toolbar.tool.validation_overlay": "Validation Overlay",
+
+  "tutorial.prompt.title": "Welcome to RailSim",
+  "tutorial.prompt.message": "Would you like to view a quick tutorial on the basic controls?",
+  "tutorial.prompt.yes": "Yes, show me",
+  "tutorial.prompt.no": "No, skip tutorial",
+
+  "tutorial.title": "Basic Controls",
+  "tutorial.close": "Close",
+  "tutorial.section.camera.title": "Camera Movement",
+  "tutorial.section.camera.desc": "Use `Middle Mouse Click` or `Right Click` + `Drag` to move across the map. Scroll the `Mouse Wheel` to zoom in and out.",
+  "tutorial.section.modes.title": "Interaction Modes",
+  "tutorial.section.modes.desc": "Press `SPACE` to toggle between Build Mode and Dispatch Mode. Use `Tab` to switch through the time.",
+  "tutorial.section.console.title": "Developer Console",
+  "tutorial.section.console.desc": "Press `{hotkey}` on the keyboard to open the developer console (if enabled in settings)."
 }

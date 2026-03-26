@@ -44,6 +44,7 @@
     if (!playerName.trim()) return;
     const res = await window.electronAPI?.createSave(playerName.trim());
     if (res?.ok) {
+      uiState.showTutorialPrompt = true;
       startGameTransition(); // start newly created game
     }
   };
@@ -58,7 +59,10 @@
 
   const deleteSave = async (filename: string) => {
     await window.electronAPI?.deleteSave(filename);
-    fetchSaves();
+    await fetchSaves();
+    if (saves.length === 0) {
+      navTo('play');
+    }
   };
 
 </script>
@@ -106,7 +110,7 @@
       </div>
 
     {:else if activeMenu === 'load_game'}
-      <div in:fade class="flex flex-col items-center gap-6 w-[600px] max-h-[50vh]">
+      <div in:fade class="flex flex-col items-center gap-6 w-150 max-h-[50vh]">
         <h2 class="text-2xl font-light tracking-widest text-slate-800 uppercase">{t('playmenu.loadGame')}</h2>
         <div class="w-full flex-1 overflow-y-auto pr-2 space-y-3">
           {#each saves as save}
@@ -122,7 +126,7 @@
       </div>
 
     {:else if activeMenu === 'delete_save'}
-      <div in:fade class="flex flex-col items-center gap-6 w-[600px] max-h-[50vh]">
+      <div in:fade class="flex flex-col items-center gap-6 w-150 max-h-[50vh]">
         <h2 class="text-2xl font-light tracking-widest text-red-600 uppercase">{t('playmenu.deleteSave')}</h2>
         <div class="w-full flex-1 overflow-y-auto pr-2 space-y-3">
           {#each saves as save}

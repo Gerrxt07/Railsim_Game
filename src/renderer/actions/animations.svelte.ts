@@ -44,3 +44,41 @@ export function menuItemAnim(node: HTMLElement, options: { index: number, skipDe
     { duration: 1.2, delay: baseDelay + options.index * 0.25, ease: 'easeOut' }
   );
 }
+
+// 4. Hover Micro-animation (Elastic Scale)
+export function hoverBounce(node: HTMLElement) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const onEnter = () => animate(node as any, { scale: 1.05 }, { type: 'spring', stiffness: 300, damping: 15 });
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const onLeave = () => animate(node as any, { scale: 1 }, { type: 'spring', stiffness: 300, damping: 15 });
+  
+  node.addEventListener('mouseenter', onEnter);
+  node.addEventListener('mouseleave', onLeave);
+  
+  return {
+    destroy() {
+      node.removeEventListener('mouseenter', onEnter);
+      node.removeEventListener('mouseleave', onLeave);
+    }
+  };
+}
+
+// 5. Click Pulse Micro-animation
+export function tapPulse(node: HTMLElement) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const onMouseDown = () => animate(node as any, { scale: 0.92 }, { duration: 0.1 });
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const onMouseUp = () => animate(node as any, { scale: 1 }, { type: 'spring', stiffness: 400, damping: 10 });
+  
+  node.addEventListener('mousedown', onMouseDown);
+  node.addEventListener('mouseup', onMouseUp);
+  node.addEventListener('mouseleave', onMouseUp);
+  
+  return {
+    destroy() {
+      node.removeEventListener('mousedown', onMouseDown);
+      node.removeEventListener('mouseup', onMouseUp);
+      node.removeEventListener('mouseleave', onMouseUp);
+    }
+  };
+}

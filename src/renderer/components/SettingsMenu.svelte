@@ -1,5 +1,6 @@
 <script lang="ts">
   import { uiState, toggleSettings, setTheme, setLanguage } from '../state/game.svelte';
+  import { hoverBounce, tapPulse } from '../actions/animations.svelte';
   import { debugStore, toggleConsole, setConsoleHotkey } from '../state/debug.svelte';
   import { t } from '../state/i18n.svelte';
   import { fly, fade } from 'svelte/transition';
@@ -29,6 +30,8 @@
     <div class="flex items-center justify-between px-8 py-8 border-b border-slate-200 dark:border-slate-400">
       <h2 class="text-2xl font-light tracking-widest text-slate-800 uppercase">{t('settings.title')}</h2>
       <button 
+        use:hoverBounce
+        use:tapPulse
         class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-black/5 text-slate-500 dark:text-slate-600 hover:text-black dark:hover:text-black transition-colors focus:outline-none"
         onclick={() => toggleSettings(false)}
         aria-label="Close settings"
@@ -45,6 +48,8 @@
         <h3 class="text-xs font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500 mb-4">{t('settings.language')}</h3>
         <div class="flex gap-4">
           <button 
+            use:hoverBounce
+            use:tapPulse
             class="flex-1 flex items-center justify-center py-2 px-4 rounded-lg border transition-all duration-300 focus:outline-none cursor-pointer
               {uiState.language === 'en' ? 'bg-slate-200 dark:bg-slate-300 border-slate-400 shadow-inner' : 'bg-transparent border-slate-200 dark:border-slate-400 hover:bg-slate-100 dark:hover:bg-[#d0d0c8]'}"
             onclick={() => setLanguage('en')}
@@ -52,6 +57,8 @@
             <img src={flagEN} alt="English" title="English" class="w-8 h-auto shadow-sm rounded-sm" />
           </button>
           <button 
+            use:hoverBounce
+            use:tapPulse
             class="flex-1 flex items-center justify-center py-2 px-4 rounded-lg border transition-all duration-300 focus:outline-none cursor-pointer
               {uiState.language === 'de' ? 'bg-slate-200 dark:bg-slate-300 border-slate-400 shadow-inner' : 'bg-transparent border-slate-200 dark:border-slate-400 hover:bg-slate-100 dark:hover:bg-[#d0d0c8]'}"
             onclick={() => setLanguage('de')}
@@ -66,6 +73,7 @@
         <h3 class="text-xs font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500 mb-4">{t('settings.appearance')}</h3>
         <div class="space-y-4">
           <button 
+            use:tapPulse
             class="w-full flex items-center justify-between group cursor-pointer focus:outline-none"
             onclick={() => setTheme(uiState.theme === 'light' ? 'dark' : 'light')}
           >
@@ -76,6 +84,7 @@
           </button>
 
           <button 
+            use:tapPulse
             class="w-full flex items-center justify-between group cursor-pointer focus:outline-none"
             onclick={() => import('../state/game.svelte').then(m => m.toggleSpeedPopups())}
           >
@@ -104,6 +113,7 @@
           </div>
           
           <button 
+            use:tapPulse
             class="w-full flex items-center justify-between group cursor-pointer focus:outline-none"
             onclick={() => toggleConsole()}
           >
@@ -117,6 +127,7 @@
             <span class="text-slate-600 dark:text-slate-800 transition-colors">{t('settings.consoleHotkey')}</span>
             <div class="relative flex items-center">
               <input 
+                use:hoverBounce
                 type="text" 
                 maxlength="1" 
                 class="w-10 h-8 text-center bg-slate-200 dark:bg-slate-300 border border-slate-400 shadow-inner rounded-md text-slate-900 font-extrabold focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all cursor-pointer uppercase text-lg"
@@ -133,6 +144,26 @@
               />
             </div>
           </div>
+        </div>
+      </section>
+
+      <!-- Other -->
+      <section>
+        <h3 class="text-xs font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500 mb-4">{t('settings.other')}</h3>
+        <div class="space-y-4">
+          <button 
+            use:tapPulse
+            class="w-full flex items-center justify-between group cursor-pointer focus:outline-none"
+            onclick={() => {
+              toggleSettings(false);
+              uiState.showTutorial = true;
+            }}
+          >
+            <span class="group-hover:text-slate-900 transition-colors">{t('settings.showTutorial')}</span>
+            <div class="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-md text-xs font-bold uppercase tracking-wider group-hover:bg-blue-200 dark:group-hover:bg-blue-800/50 transition-colors">
+              Open
+            </div>
+          </button>
         </div>
       </section>
 
@@ -154,6 +185,8 @@
         </div>
 
         <button 
+          use:hoverBounce
+          use:tapPulse
           class="w-full flex items-center justify-center p-3 rounded-lg border border-red-200 dark:border-red-300/30 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-700 transition-all duration-300 font-semibold uppercase tracking-widest text-sm"
           onclick={() => {
             toggleSettings(false);

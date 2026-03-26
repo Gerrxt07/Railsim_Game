@@ -7,6 +7,7 @@
   import GameUI from './components/GameUI.svelte';
   import SettingsMenu from './components/SettingsMenu.svelte';
   import DeveloperConsole from './components/DeveloperConsole.svelte';
+  import TutorialOverlay from './components/TutorialOverlay.svelte';
   import { toggleSettings } from './state/game.svelte';
   import { debugStore, toggleConsoleVisibility } from './state/debug.svelte';
   import { fade } from 'svelte/transition';
@@ -199,6 +200,9 @@
 
   <!-- Developer Console pill -->
   <DeveloperConsole />
+
+  <!-- Tutorial Overlays -->
+  <TutorialOverlay />
 
   {#if appVersion && currentGameState.value !== GameState.SPLASH && currentGameState.value !== GameState.INITIALIZING}
     <div class="absolute bottom-4 right-4 text-slate-500/50 text-sm font-light pointer-events-none z-30">

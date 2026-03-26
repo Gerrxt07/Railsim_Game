@@ -2,6 +2,7 @@
   import { fade, fly } from 'svelte/transition';
   import { backOut } from 'svelte/easing';
   import { editorState, setTool, toggleOverlay, type EditorTool, type OverlayType } from '../state/editor.svelte';
+  import { hoverBounce, tapPulse } from '../actions/animations.svelte';
   import { t } from '../state/i18n.svelte';
   import { 
     MousePointer2, BoxSelect, MousePointerSquareDashed,
@@ -88,6 +89,8 @@
         >
           <!-- Main Category Pill Icon -->
           <button 
+            use:hoverBounce
+            use:tapPulse
             class="w-12 h-12 rounded-full flex items-center justify-center transition-all duration-200 outline-none hover:bg-black/5 dark:hover:bg-black/10 focus:outline-none
                    {isActiveCategory
                      ? 'bg-blue-100 dark:bg-blue-900/20 text-blue-600 dark:text-blue-700 shadow-inner' 
@@ -122,6 +125,7 @@
                             : editorState.activeTool === tool.id}
                     <!-- svelte-ignore a11y_consider_explicit_label -->
                     <button
+                      use:tapPulse
                       class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-left transition-all duration-200 relative focus:outline-none cursor-pointer
                              {isActiveNode 
                                ? 'bg-blue-100 dark:bg-blue-900/20 text-blue-800 dark:text-blue-700 font-medium shadow-inner' 
