@@ -1,18 +1,25 @@
 <script lang="ts">
   import { GameState, currentGameState, updateThemeClass, viewState } from './state/game.svelte';
-  import { editorState } from './state/editor.svelte';
+  import { editorState, startTrackPlacement, updateTrackPlacement, commitTrackPlacement, cancelTrackPlacement, isTrackTool } from './state/editor.svelte';
   import { circleReveal } from './actions/animations.svelte';
   import SplashScreen from './components/SplashScreen.svelte';
   import MainMenu from './components/MainMenu.svelte';
   import GameUI from './components/GameUI.svelte';
+  import NetworkLayer from './components/NetworkLayer.svelte';
+  import TrackPlacementPreview from './components/TrackPlacementPreview.svelte';
   import SettingsMenu from './components/SettingsMenu.svelte';
   import DeveloperConsole from './components/DeveloperConsole.svelte';
   import TutorialOverlay from './components/TutorialOverlay.svelte';
   import { toggleSettings } from './state/game.svelte';
   import { debugStore, toggleConsoleVisibility } from './state/debug.svelte';
+  import { dispatchCommand } from './state/network.svelte';
+  import { placeTrackCommand } from './game/commands';
+  import { snapToGrid, snapTrackEndToDigitalLine } from './game/utils/schematicSnap';
+  import type { Position, TrackType } from './game/model/network';
   import { fade } from 'svelte/transition';
 
   const gridSize = 40;
+  const connectTolerance = 18;
   const dotRadius = 1.5;
 
   let appVersion = $state('');
@@ -34,6 +41,28 @@
   let boxStart = $state({ x: 0, y: 0 });
   let boxCurrent = $state({ x: 0, y: 0 });
 
+  function clientToWorld(clientX: number, clientY: number): Position {
+    return {
+      x: (clientX - viewState.x) / viewState.zoom,
+      y: (clientY - viewState.y) / viewState.zoom
+    };
+  }
+
+  function getTrackSnappedPosition(rawWorldPos: Position): Position {
+    const start = editorState.trackPlacement.startPos;
+    if (!editorState.trackPlacement.isActive || !start) {
+      return snapToGrid(rawWorldPos, gridSize);
+    }
+
+    return snapTrackEndToDigitalLine(start, rawWorldPos, gridSize);
+  }
+
+  function getSelectedTrackType(): TrackType {
+    if (editorState.activeTool === 'TRACK_CURVE') return 'curve';
+    if (editorState.activeTool === 'TRACK_SWITCH') return 'switch';
+    return 'straight';
+  }
+
   function handlePointerDown(e: PointerEvent) {
     // Only apply in RUNNING state
     if (currentGameState.value !== GameState.RUNNING) return;
@@ -44,15 +73,31 @@
       (e.currentTarget as Element).setPointerCapture(e.pointerId);
       dragStart = { x: e.clientX, y: e.clientY };
       viewStart = { x: viewState.x, y: viewState.y };
+    } else if (e.button === 0 && editorState.mode === 'BUILD' && isTrackTool(editorState.activeTool)) {
+      const rawWorldPos = clientToWorld(e.clientX, e.clientY);
+      const snappedPos = getTrackSnappedPosition(rawWorldPos);
+
+      if (!editorState.trackPlacement.isActive) {
+        startTrackPlacement(snappedPos);
+      } else {
+        updateTrackPlacement(snappedPos);
+        const payload = commitTrackPlacement();
+        if (payload) {
+          dispatchCommand(placeTrackCommand, {
+            ...payload,
+            trackType: getSelectedTrackType(),
+            connectTolerance
+          });
+        }
+      }
     } else if (e.button === 0 && editorState.mode === 'BUILD' && editorState.activeTool === 'MULTISELECT') {
       isBoxSelecting = true;
       (e.currentTarget as Element).setPointerCapture(e.pointerId);
+
+      const worldPos = clientToWorld(e.clientX, e.clientY);
       
-      const worldX = (e.clientX - viewState.x) / viewState.zoom;
-      const worldY = (e.clientY - viewState.y) / viewState.zoom;
-      
-      boxStart = { x: worldX, y: worldY };
-      boxCurrent = { x: worldX, y: worldY };
+      boxStart = { x: worldPos.x, y: worldPos.y };
+      boxCurrent = { x: worldPos.x, y: worldPos.y };
     }
   }
 
@@ -60,10 +105,12 @@
     if (isDragging) {
       viewState.x = viewStart.x + (e.clientX - dragStart.x);
       viewState.y = viewStart.y + (e.clientY - dragStart.y);
+    } else if (editorState.trackPlacement.isActive && editorState.mode === 'BUILD' && isTrackTool(editorState.activeTool)) {
+      const rawWorldPos = clientToWorld(e.clientX, e.clientY);
+      updateTrackPlacement(getTrackSnappedPosition(rawWorldPos));
     } else if (isBoxSelecting) {
-      const worldX = (e.clientX - viewState.x) / viewState.zoom;
-      const worldY = (e.clientY - viewState.y) / viewState.zoom;
-      boxCurrent = { x: worldX, y: worldY };
+      const worldPos = clientToWorld(e.clientX, e.clientY);
+      boxCurrent = { x: worldPos.x, y: worldPos.y };
     }
   }
 
@@ -113,7 +160,9 @@
 
   function handleKeyDown(e: KeyboardEvent) {
     if (e.key === 'Escape') {
-      if (debugStore.isConsoleOpen) {
+      if (editorState.trackPlacement.isActive) {
+        cancelTrackPlacement();
+      } else if (debugStore.isConsoleOpen) {
         toggleConsoleVisibility();
       } else if (currentGameState.value === GameState.RUNNING) {
         toggleSettings();
@@ -164,7 +213,13 @@
       <rect width="100%" height="100%" fill="url(#dot-grid)" />
       
       <g id="network-layer" transform="translate({viewState.x} {viewState.y}) scale({viewState.zoom})">
-        </g>
+        <NetworkLayer />
+        <TrackPlacementPreview
+          startPos={editorState.trackPlacement.startPos}
+          endPos={editorState.trackPlacement.currentPos}
+          trackType={getSelectedTrackType()}
+        />
+      </g>
 
       {#if isBoxSelecting && (Math.abs(boxCurrent.x - boxStart.x) > 1 || Math.abs(boxCurrent.y - boxStart.y) > 1)}
         <g transform="translate({viewState.x} {viewState.y}) scale({viewState.zoom})">

@@ -28,7 +28,9 @@
       categoryIcon: Hammer,
       isOverlayCategory: false,
       tools: [
-        { id: 'TRACK', label: 'track', icon: TrainTrack },
+        { id: 'TRACK_STRAIGHT', label: 'track_straight', icon: TrainTrack },
+        { id: 'TRACK_CURVE', label: 'track_curve', icon: TrainTrack },
+        { id: 'TRACK_SWITCH', label: 'track_switch', icon: TrainTrack },
         { id: 'STATION', label: 'station', icon: TrainFront },
         { id: 'SIGNAL', label: 'signal', icon: TrafficCone },
         { id: 'DEPOT', label: 'depot', icon: Warehouse },

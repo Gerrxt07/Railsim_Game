@@ -2,6 +2,7 @@
   "menu.play": "Play",
   "menu.settings": "Settings",
   "menu.quit": "Quit",
+  "menu.credit": "Made by Gerrxt",
 
   "settings.title": "Settings",
   "settings.appearance": "Appearance",
@@ -41,7 +42,10 @@
   "toolbar.tool.multiselect": "Box / Multiselect",
   "toolbar.tool.inspect": "Inspect",
 
-  "toolbar.tool.track": "Track (Straight, Curve, switch)",
+  "toolbar.tool.track": "Track",
+  "toolbar.tool.track_straight": "Track - Straight",
+  "toolbar.tool.track_curve": "Track - Curve",
+  "toolbar.tool.track_switch": "Track - Switch",
   "toolbar.tool.station": "Station",
   "toolbar.tool.signal": "Signal",
   "toolbar.tool.depot": "Depot",

@@ -2,6 +2,7 @@
   "menu.play": "Spielen",
   "menu.settings": "Einstellungen",
   "menu.quit": "Verlassen",
+  "menu.credit": "Made by Gerrxt",
 
   "settings.title": "Einstellungen",
   "settings.appearance": "Darstellung",
@@ -41,7 +42,10 @@
   "toolbar.tool.multiselect": "Box / Mehrfachauswahl",
   "toolbar.tool.inspect": "Untersuchen",
 
-  "toolbar.tool.track": "Gleis (Gerade, Kurve, Weiche)",
+  "toolbar.tool.track": "Gleis",
+  "toolbar.tool.track_straight": "Gleis - Gerade",
+  "toolbar.tool.track_curve": "Gleis - Kurve",
+  "toolbar.tool.track_switch": "Gleis - Weiche",
   "toolbar.tool.station": "Bahnhof",
   "toolbar.tool.signal": "Signal",
   "toolbar.tool.depot": "Depot",

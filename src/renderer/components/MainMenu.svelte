@@ -146,4 +146,10 @@
 
     {/if}
   </div>
+
+  {#if activeMenu === 'main'}
+    <div class="absolute bottom-8 text-slate-600/80 tracking-[0.14em] uppercase text-sm font-light pointer-events-none">
+      {t('menu.credit')}
+    </div>
+  {/if}
 </div>

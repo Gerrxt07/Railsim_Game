@@ -20,6 +20,7 @@ export interface TrackSegment {
   id: TrackId;
   type: TrackType;
   nodes: NodeId[]; // Typically 2 nodes for straight/curve, 3+ for a switch
+  controlPoint?: Position; // Optional control point for schematic curved rendering
   length: number;
   maxSpeed: number;
 }
